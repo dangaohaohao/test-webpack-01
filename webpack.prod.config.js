@@ -8,6 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const glob = require('glob');
+// const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 
 const ROOT_PATH = path.resolve(__dirname);
 const ENTRY_FILE_REG = /src\/(.*)\/index\.js/;
@@ -26,7 +27,7 @@ const setMPA = () => {
     htmlWebpackPlugins.push(new HtmlWebpackPlugin({
       template: path.join(__dirname, `/src/${pageName}/index.html`),
       filename: `${pageName}.html`,
-      chunks: [pageName],
+      chunks: ['vendors', pageName],
       inject: true,
       minify: {
         html5: true,
@@ -176,6 +177,19 @@ module.exports = {
     }),
     new UglifyJsPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
+    // new HtmlWebpackExternalsPlugin({
+    //   externals: [{
+    //       module: 'react',
+    //       entry: 'https://now8.gtimg.com/now/lib/16.8.6/react.min.js',
+    //       global: 'React',
+    //     },
+    //     {
+    //       module: 'react-dom',
+    //       entry: 'https://now8.gtimg.com/now/lib/16.8.6/react-dom.min.js',
+    //       global: 'ReactDom',
+    //     },
+    //   ],
+    // }),
   ].concat(htmlWebpackPlugins),
   // 热更新不输出实际文件，而是放在内存中，不用磁盘io，速度更快,不用手动刷新
   // devServer: {
@@ -197,4 +211,16 @@ module.exports = {
     hints: false
   },
   devtool: 'none',
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      name: true,
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+        },
+      },
+    },
+  },
 };

@@ -210,3 +210,16 @@ const setMPA = () => {
 // 在 webpack 的 devtool 中配置
 devtool: 'eval-source-map',
 ```
+
+#### 提取公共资源
+
+- 一些公共资源是可以提取出来的，这样就不用重复打包, 比如 vue / react 的基础包
+- 方法一: 使用 html-webpack-externals-plugin,像 react / react-dom, 可以是本地的文件或者通过 cdn 引入(模板中引入)，不打入 bundle 中, @see https://www.npmjs.com/package/html-webpack-externals-plugin
+- 方法二: 使用 SplitChunksPlugin 进行公共脚本分离, webpack4 内置的，替代 CommonsChunkPlugin 插件, @see https://www.webpackjs.com/plugins/split-chunks-plugin/
+
+```text
+Chunks 参数说明
+- async 异步引入的库进行分离(默认)
+- initial 同步引入的库进行分离
+- all 所有引入的库进行分离(推荐)
+```

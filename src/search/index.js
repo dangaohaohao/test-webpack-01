@@ -2,8 +2,14 @@
 
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
+import {
+  sayHello
+} from '../../common/sayHello';
 
 class Search extends Component {
+  componentDidMount() {
+    sayHello();
+  }
   render() {
     return (
       <div className="container">

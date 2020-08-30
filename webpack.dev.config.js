@@ -6,8 +6,9 @@ const {
 } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const glob = require('glob');
+// const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 
 const ROOT_PATH = path.resolve(__dirname);
 const ENTRY_FILE_REG = /src\/(.*)\/index\.js/;
@@ -23,21 +24,23 @@ const setMPA = () => {
     const pageName = match && match[1];
 
     entry[pageName] = entryFile;
-    htmlWebpackPlugins.push(new HtmlWebpackPlugin({
-      template: path.join(__dirname, `/src/${pageName}/index.html`),
-      filename: `${pageName}.html`,
-      chunks: [pageName],
-      inject: true,
-      minify: {
-        html5: true,
-        minifyCSS: true,
-        minifyJS: true,
-        removeComments: false,
-        collapseWhitespace: true,
-        preserveLineBreaks: false,
-      },
-    }), );
-  })
+    htmlWebpackPlugins.push(
+      new HtmlWebpackPlugin({
+        template: path.join(__dirname, `/src/${pageName}/index.html`),
+        filename: `${pageName}.html`,
+        chunks: ['commons', pageName],
+        inject: true,
+        minify: {
+          html5: true,
+          minifyCSS: true,
+          minifyJS: true,
+          removeComments: false,
+          collapseWhitespace: true,
+          preserveLineBreaks: false,
+        },
+      }),
+    );
+  });
 
   return {
     entry,
@@ -160,7 +163,20 @@ module.exports = {
       assetNameRegExp: /\.css$/g,
       cssProcessor: require('cssnano'),
     }),
-    new UglifyJsPlugin()
+    new UglifyJsPlugin(),
+    // new HtmlWebpackExternalsPlugin({
+    //   externals: [{
+    //       module: 'react',
+    //       entry: 'https://now8.gtimg.com/now/lib/16.8.6/react.min.js',
+    //       global: 'React',
+    //     },
+    //     {
+    //       module: 'react-dom',
+    //       entry: 'https://now8.gtimg.com/now/lib/16.8.6/react-dom.min.js',
+    //       global: 'ReactDom',
+    //     },
+    //   ],
+    // }),
   ].concat(htmlWebpackPlugins),
   // 热更新不输出实际文件，而是放在内存中，不用磁盘io，速度更快,不用手动刷新
   devServer: {
@@ -179,7 +195,21 @@ module.exports = {
   // }
   // 关闭性能提示
   performance: {
-    hints: false
+    hints: false,
   },
   devtool: 'eval-source-map',
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      name: true,
+      minChunks: 2,
+      minSize: 10,
+      cacheGroups: {
+        commons: {
+          // test: /[\\/]node_modules[\\/]/,
+          name: 'commons',
+        },
+      },
+    },
+  },
 };
