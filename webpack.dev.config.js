@@ -7,13 +7,52 @@ const {
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const glob = require('glob');
+
+const ROOT_PATH = path.resolve(__dirname);
+const ENTRY_FILE_REG = /src\/(.*)\/index\.js/;
+
+const setMPA = () => {
+  const entry = {};
+  const htmlWebpackPlugins = [];
+
+  const entryFiles = glob.sync(path.resolve(ROOT_PATH, './src/*/index.js'));
+
+  entryFiles.map((entryFile) => {
+    const match = entryFile.match(ENTRY_FILE_REG);
+    const pageName = match && match[1];
+
+    entry[pageName] = entryFile;
+    htmlWebpackPlugins.push(new HtmlWebpackPlugin({
+      template: path.join(__dirname, `/src/${pageName}/index.html`),
+      filename: `${pageName}.html`,
+      chunks: [pageName],
+      inject: true,
+      minify: {
+        html5: true,
+        minifyCSS: true,
+        minifyJS: true,
+        removeComments: false,
+        collapseWhitespace: true,
+        preserveLineBreaks: false,
+      },
+    }), );
+  })
+
+  return {
+    entry,
+    htmlWebpackPlugins,
+  };
+};
+
+const {
+  entry,
+  htmlWebpackPlugins
+} = setMPA();
 
 module.exports = {
   mode: 'development',
-  entry: {
-    // hello: './src/index.js',
-    search: './src/search.js',
-  },
+  entry: entry,
   output: {
     filename: '[name]_[hash:8].js',
     path: path.join(__dirname, 'dist'),
@@ -98,21 +137,21 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      // 可以使用 ejs 模版语法
-      template: path.join(__dirname, '/src/index.html'),
-      filename: 'index.html',
-      chunks: ['search'],
-      inject: true,
-      minify: {
-        html5: true,
-        minifyCSS: true,
-        minifyJS: true,
-        removeComments: false,
-        collapseWhitespace: true,
-        preserveLineBreaks: false,
-      }
-    }),
+    // new HtmlWebpackPlugin({
+    //   // 可以使用 ejs 模版语法
+    //   template: path.join(__dirname, '/src/index.html'),
+    //   filename: 'index.html',
+    //   chunks: ['search'],
+    //   inject: true,
+    //   minify: {
+    //     html5: true,
+    //     minifyCSS: true,
+    //     minifyJS: true,
+    //     removeComments: false,
+    //     collapseWhitespace: true,
+    //     preserveLineBreaks: false,
+    //   }
+    // }),
     new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name]_[hash:8].css',
@@ -122,7 +161,7 @@ module.exports = {
       cssProcessor: require('cssnano'),
     }),
     new UglifyJsPlugin()
-  ],
+  ].concat(htmlWebpackPlugins),
   // 热更新不输出实际文件，而是放在内存中，不用磁盘io，速度更快,不用手动刷新
   devServer: {
     contentBase: './dist',

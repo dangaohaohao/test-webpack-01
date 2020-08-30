@@ -142,3 +142,52 @@ module.exports = {
 
 - 使用 row-loader 来对 html, js 库等内联进来
 - css 内联可以使用 style-loader, options 中 singleon: true, 它会把所有的 style 标签合并成一个, 如果是打包好的 css 代码，可以使用 html-inline-css-webpack-plugin
+
+#### 多页面打包
+
+- 一个 entry 一个页面和一个 new HtmlWebpackPlugin() ， 缺点： 每次新增 / 删除都需要修改 webpack.config.js 中的配置
+- 利用 glob.sync
+
+###### 多页面打包实现
+
+```js
+const glob = require('glob');
+
+const ROOT_PATH = path.resolve(__dirname);
+const ENTRY_FILE_REG = /src\/(.*)\/index\.js/;
+
+const setMPA = () => {
+  const entry = {};
+  const htmlWebpackPlugins = [];
+
+  const entryFiles = glob.sync(path.resolve(ROOT_PATH, './src/*/index.js'));
+
+  entryFiles.map((entryFile) => {
+    const match = entryFile.match(ENTRY_FILE_REG);
+    const pageName = match && match[1];
+
+    entry[pageName] = entryFile;
+    htmlWebpackPlugins.push(
+      new HtmlWebpackPlugin({
+        template: path.join(__dirname, `/src/${pageName}/index.html`),
+        filename: `${pageName}.html`,
+        chunks: [pageName],
+        inject: true,
+        minify: {
+          html5: true,
+          minifyCSS: true,
+          minifyJS: true,
+          removeComments: false,
+          collapseWhitespace: true,
+          preserveLineBreaks: false,
+        },
+      }),
+    );
+  });
+
+  return {
+    entry,
+    htmlWebpackPlugins,
+  };
+};
+```
