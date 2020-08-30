@@ -126,3 +126,19 @@ module.exports = {
 // @todo lib-flexible 手动找到下载的 lib-flexible 库，在头部内联进来，但是这样很不方便
 
 ```
+
+#### 资源内联
+
+###### 资源内联意义
+
+- 代码层面
+  - 页面框架初始化相关脚本
+  - 上报相关打点
+  - css 内联避免页面闪动
+- 请求层面: 减少 http 网络请求数
+  - 小图片 / 字体内联 (url-loader)
+
+###### 资源内联方法
+
+- 使用 row-loader 来对 html, js 库等内联进来
+- css 内联可以使用 style-loader, options 中 singleon: true, 它会把所有的 style 标签合并成一个, 如果是打包好的 css 代码，可以使用 html-inline-css-webpack-plugin
