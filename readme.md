@@ -59,12 +59,16 @@ css的contenthash, 以及js的chunkhash, 这个跟hotModuleReplacementPlugin有�
 
 #### 兼容性
 
+###### 浏览器前缀自动添加
+
 - css3 前缀，原因还是因为各浏览器的标准还没有统一，可以通过在构建时期加上 css3 前缀来避免一些兼容性问题, 插件 postcss-loader / autoprefixer 配合使用 , postcss 跟 less, sass 不同， less, sass 是预处理器，打包前进行处理，然后处理好了文件，postcss 在处理 @see https://github.com/postcss/postcss
   - IE Trident(-ms)
   - 火狐 Geko(-moz)
   - 谷歌 Webkit(-webkit)
   - O Presto(-O)
 - 使用 @see https://github.com/browserslist/browserslist#readme https://github.com/postcss/autoprefixer
+
+###### 浏览器前缀设置
 
 ```js
 // webpack.config.js
@@ -92,5 +96,33 @@ module.exports = {
     require('autoprefixer'),
   ]
 }
+
+```
+
+#### 页面适配
+
+###### rem 适配
+
+- rem 是相对单位，相对于根元素，而 px 是绝对单位
+
+###### rem 适配设置
+
+- px2rem-loader / lib-flexible 配合使用, px2rem 转，转换单位， 使用 lib-flexible 来计算当页面打开之后 rem 的值
+- px2rem-loader 使用有问题，issues 作者回复使用 postcss 代替 @see https://github.com/Jinjiang/px2rem-loader/issues/18
+
+```js
+// 使用 px2rem-loader 一直报错 Error: undefined:7:3: missing '}' 作者回复使用 postcss 代替
+{
+  loader: 'px2rem-loader',
+  options: {
+  // remUnit 是指 1 rem 对应 多少 px， 最好是设计稿 / 10, 比如这里最好是 750 的设计稿
+  remUnit: 75,
+  // 转换成 rem 后小数点位数
+  remPrecision: 8,
+        },
+},
+// @todo 使用 postcss 代替
+
+// @todo lib-flexible 手动找到下载的 lib-flexible 库，在头部内联进来，但是这样很不方便
 
 ```

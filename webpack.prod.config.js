@@ -63,6 +63,15 @@ module.exports = {
             //   ],
             // },
           },
+          // {
+          //   loader: 'px2rem-loader',
+          //   options: {
+          //     // remUnit 是指 1 rem 对应 多少 px， 最好是设计稿 / 10, 比如这里最好是 750 的设计稿
+          //     remUnit: 75,
+          //     // 转换成 rem 后小数点位数
+          //     remPrecision: 8,
+          //   },
+          // },
         ],
       },
       // {
@@ -144,4 +153,8 @@ module.exports = {
   //   // 判断文件是否变化是通过不停询问系统指定文件有没有变化得到的，默认每秒访问1000次
   //   poll: 1000,
   // }
+  // 关闭性能提示
+  performance: {
+    hints: false
+  }
 };
