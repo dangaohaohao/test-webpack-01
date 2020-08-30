@@ -1,8 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {
+  CleanWebpackPlugin
+} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   mode: 'development',
@@ -15,8 +19,7 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.js$/,
         use: 'babel-loader',
         include: path.resolve(__dirname, './src'),
@@ -28,6 +31,17 @@ module.exports = {
           // 'style-loader',
           MiniCssExtractPlugin.loader,
           'css-loader',
+          {
+            loader: 'postcss-loader',
+            // options: {
+            //   plugins: [
+            //     // overrideBrowserslist 可以指定浏览器版本 使用人比例等等
+            //     require('autoprefixer')({
+            //       overrideBrowserslist: ['last 15 versions'],
+            //     }),
+            //   ],
+            // },
+          },
         ],
       },
       {
@@ -37,6 +51,17 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           'css-loader',
           'less-loader',
+          {
+            loader: 'postcss-loader',
+            // options: {
+            //   plugins: [
+            //     // overrideBrowserslist 可以指定浏览器版本 使用人比例等等
+            //     require('autoprefixer')({
+            //       overrideBrowserslist: ['last 15 versions'],
+            //     }),
+            //   ],
+            // },
+          },
         ],
       },
       // {
@@ -59,29 +84,44 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|jpeg|svg|gif)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 1100000,
-              name: '[name]_[hash:8].[ext]',
-              outputPath: 'assets/',
-              publicPath: 'assets/',
-            },
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 1100000,
+            name: '[name]_[hash:8].[ext]',
+            outputPath: 'assets/',
+            publicPath: 'assets/',
           },
-        ],
+        }, ],
       },
     ],
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      // 可以使用 ejs 模版语法
+      template: path.join(__dirname, '/src/index.html'),
+      filename: 'index.html',
+      chunks: ['search'],
+      inject: true,
+      minify: {
+        html5: true,
+        minifyCSS: true,
+        minifyJS: true,
+        removeComments: false,
+        collapseWhitespace: true,
+        preserveLineBreaks: false,
+      }
     }),
     new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name]_[hash:8].css',
     }),
+    new OptimizeCssAssetsWebpackPlugin({
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: require('cssnano'),
+    }),
+    new UglifyJsPlugin()
   ],
   // 热更新不输出实际文件，而是放在内存中，不用磁盘io，速度更快,不用手动刷新
   devServer: {
