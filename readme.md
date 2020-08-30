@@ -191,3 +191,22 @@ const setMPA = () => {
   };
 };
 ```
+
+#### Source Map 定位源代码
+
+- Source Map 科普文 @see http://www.ruanyifeng.com/blog/2013/01/javascript_source_map.html
+- webpack 文章 @see https://www.webpackjs.com/configuration/devtool/
+- 开发环境开启，线上环境关闭，线上排查问题的时候，可以将 source map 上传到错误监控系统
+- Source Map 关键字
+  - eval: 使用 eval 包裹模块代码
+  - source map: 产生 .map 文件
+  - cheap: 不包含列信息
+  - inline: 将.map 作为 DataUrl 嵌入, 不单独生成 .map 文件
+  - module: 不包含 loader 的 source map
+
+###### Source Map 配置
+
+```js
+// 在 webpack 的 devtool 中配置
+devtool: 'eval-source-map',
+```

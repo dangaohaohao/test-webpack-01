@@ -195,5 +195,6 @@ module.exports = {
   // 关闭性能提示
   performance: {
     hints: false
-  }
+  },
+  devtool: 'none',
 };
