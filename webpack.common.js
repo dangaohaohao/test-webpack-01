@@ -1,15 +1,15 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
+// const webpack = require('webpack');
 const {
   CleanWebpackPlugin
 } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const glob = require('glob');
 // const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
-const TerserWebpackPlugin = require('terser-webpack-plugin');
+// const TerserWebpackPlugin = require('terser-webpack-plugin');
 
 const ROOT_PATH = path.resolve(__dirname);
 const ENTRY_FILE_REG = /src\/(.*)\/index\.js/;
@@ -64,6 +64,8 @@ module.exports = {
     rules: [{
         test: /\.js$/,
         use: 'babel-loader',
+        // 加上 eslint-loader 会在构建阶段报错
+        // use: ['babel-loader', 'eslint-loader'],
         include: path.resolve(__dirname, './src'),
         exclude: path.resolve(__dirname, './node_modules'),
       },

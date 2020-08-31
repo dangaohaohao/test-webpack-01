@@ -11,7 +11,19 @@
     "watch:prod": "webpack-dev-server --config webpack.prod.js --open",
     "build:dev": "webpack --config webpack.dev.js",
     "build:prod": "webpack --config webpack.prod.js",
-    "clean": "rm -rf ./dist"
+    "clean": "rm -rf ./dist",
+    "precommit": "lint-staged",
+    "lint:staged": "eslint"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,jsx}": [
+      "npm run lint:staged"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "echo test-pre-commit && lint-staged"
+    }
   },
   "keywords": [],
   "author": "",
@@ -25,16 +37,25 @@
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
     "autoprefixer": "^9.8.6",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^4.2.2",
     "cssnano": "^4.1.10",
+    "eslint": "^7.7.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.1.0",
     "file-loader": "^6.0.0",
     "glob": "^7.1.6",
     "html-webpack-externals-plugin": "^3.8.0",
     "html-webpack-plugin": "^4.3.0",
+    "husky": "^4.2.5",
     "less": "^3.12.2",
     "less-loader": "^7.0.0",
+    "lint-staged": "^10.2.13",
     "mini-css-extract-plugin": "^0.11.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss": "^7.0.32",

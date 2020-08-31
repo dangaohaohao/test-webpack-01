@@ -322,10 +322,58 @@ new webpack.optimize.ModuleConcatenationPlugin(),
 // 返回一个 promise, webpack 采用的是 jsonp 的形式
 // example
 handleClick() {
-  import('./testDynamic').then((Text) => {
+  import('./testDynamic.js').then((Text) => {
     this.setState({
       Text,
     })
   })
 }
+```
+
+#### webpack 结合 ESLint 使用
+
+- ESLint 规范实践
+  - Airbnb: eslint-config-airbnb (使用 react) / eslint-config-airbnb-base (不使用 react)
+  - @see https://www.npmjs.com/package/eslint-config-airbnb
+  - @see https://eslint.bootcss.com/docs/user-guide/configuring
+- ESLint 落地实现
+  - 和 CI/CD 系统集成
+  - 和构建工具集成(webpack), 遇到语法问题, 构建不成功
+
+###### ESLint 落地实现
+
+- 方案一：构建阶段报错
+
+  - `npm i eslint eslint-plugin-import eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y -D`
+  - `npm i babel-eslint eslint-loader -D`
+  - 转换 js 加上 eslint-loader 配置
+  - 添加 .eslintrc.json 文件，进行配置
+
+- 方案二：git add / git commit 钩子报错
+
+  - 安装 husky `npm install husky -D`
+  - 安装 lint-staged `npm install lint-staged -D`
+  - 增加 npm script, 通过 lint-staged 增量检查修改的文件
+  - @see https://www.npmjs.com/package/husky
+  - @see https://www.npmjs.com/package/lint-staged
+
+- 跳过校验方式: `add --no-verify to bypass`
+
+```js
+ "scripts": {
+    "precommit": "lint-staged",
+    "lint:staged": "eslint"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,jsx}": [
+      "npm run lint:staged"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "echo test-pre-commit && lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "echo test-pre-push"
+    }
+  },
 ```
