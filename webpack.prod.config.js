@@ -9,6 +9,7 @@ const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plug
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const glob = require('glob');
 // const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
+const TerserWebpackPlugin = require('terser-webpack-plugin');
 
 const ROOT_PATH = path.resolve(__dirname);
 const ENTRY_FILE_REG = /src\/(.*)\/index\.js/;
@@ -175,7 +176,7 @@ module.exports = {
       assetNameRegExp: /\.css$/g,
       cssProcessor: require('cssnano'),
     }),
-    new UglifyJsPlugin(),
+    new TerserWebpackPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
     // new HtmlWebpackExternalsPlugin({
     //   externals: [{

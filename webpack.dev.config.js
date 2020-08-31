@@ -6,9 +6,10 @@ const {
 } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const glob = require('glob');
 // const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
+const TerserWebpackPlugin = require('terser-webpack-plugin');
 
 const ROOT_PATH = path.resolve(__dirname);
 const ENTRY_FILE_REG = /src\/(.*)\/index\.js/;
@@ -163,7 +164,7 @@ module.exports = {
       assetNameRegExp: /\.css$/g,
       cssProcessor: require('cssnano'),
     }),
-    new UglifyJsPlugin(),
+    new TerserWebpackPlugin(),
     // new HtmlWebpackExternalsPlugin({
     //   externals: [{
     //       module: 'react',

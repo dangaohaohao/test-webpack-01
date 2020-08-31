@@ -223,3 +223,57 @@ Chunks 参数说明
 - initial 同步引入的库进行分离
 - all 所有引入的库进行分离(推荐)
 ```
+
+#### 摇树优化 tree shaking
+
+```text
+概念：一个模块可能有多个方法，只要其中的某个方法用到了，整个文件都会被打到 bundle 中去,
+tree shaking 就是只把用到的方法打入 bundle, 没用到的方法会在 uglify 阶段被擦除掉
+
+webpack 默认支持,  mode 为 production 的情况下会默认开启
+
+要求是 es6 的语法，commonJs 的方式不支持
+
+原理：DCE
+if (false) {
+  console.log('代码不会执行到');
+}
+
+代码不会被执行，不可到达
+代码的结果不会被用到
+代码只会影响死变量(只写不读)
+```
+
+###### tree shaking 原理
+
+- 利用 es6 模块的特点
+  - 只能作为模块顶层的语句出现
+  - import 的模块名只能是字符串常量
+  - import binding 是 immutable 的
+- 代码擦除，uglify (使用 terser-webpack-plugin 代替)阶段删除无用代码
+- 对模块代码进行静态分析，在编译阶段会分析哪些代码没有用到，增加注释来标记(-p / --optimize-minimize)，在 uglify 阶段通过标记来删除无用代码
+- tree shaking 要求使用到的代码是不能有副作用的，如果有副作用，tree shaking 会失效
+- 「副作用」的定义是，在导入时会执行特殊行为的代码，而不是仅仅暴露一个 export 或多个 export。举例说明，例如 polyfill，它影响全局作用域，并且通常不提供 export。
+- @see https://www.webpackjs.com/guides/tree-shaking/
+
+###### 问题点
+
+```text
+production 环境报错： Unexpected token: keyword «const» [index_1202ed92.js:163,0]
+
+问题原因:
+1，是 UglifyJS 不支持 ES6 的语法。
+2，发现 uglifyjs-webpack-plugin 2.0 版本的 Release 日志中，明确提示重新切换回到 uglify-js，因为 uglify-es 被废弃了，如果需要 ES6 代码压缩，请使用 terser-webpack-plugin
+
+解决方案
+使用terser-webpack-plugin 替换 uglifyjs-webpack-plugin进行代码压缩。
+
+1: 安装terser-webpack-plugin
+npm install terser-webpack-plugin --save-dev
+2: 引入terser-webpack-plugin
+const TerserPlugin = require('terser-webpack-plugin');
+3: 使用TerserPlugin替换UglifyJsPlugin, terserOptions替换uglifyOptions
+其他参数基本一致。
+
+@see https://github.com/webpack-contrib/terser-webpack-plugin
+```

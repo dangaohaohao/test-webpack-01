@@ -5,6 +5,7 @@ import ReactDom from 'react-dom';
 import {
   sayHello
 } from '../../common/sayHello';
+import { testTreeShaking} from '../../utils/test';
 
 class Search extends Component {
   componentDidMount() {
