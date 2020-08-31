@@ -17,6 +17,9 @@ module.exports = merge(common, {
     new MiniCssExtractPlugin({
       filename: '[name]_[hash:8].css',
     }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development')
+    })
   ],
   // 热更新不输出实际文件，而是放在内存中，不用磁盘io，速度更快,不用手动刷新
   devServer: {
