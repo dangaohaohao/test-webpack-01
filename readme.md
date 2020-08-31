@@ -305,3 +305,27 @@ const TerserPlugin = require('terser-webpack-plugin');
 ```js
 new webpack.optimize.ModuleConcatenationPlugin(),
 ```
+
+#### 代码分割 动态 import
+
+- 抽离相同代码到一个共享块
+- 脚本懒加载, 使得初始下载的代码更小
+
+###### 懒加载 js 脚本的方式
+
+- commonJs: require.ensure
+- ES6: 动态 import(需要 babel 转换) @babel/plugin-syntax-dynamic-import
+- @see https://babeljs.io/docs/en/babel-plugin-syntax-dynamic-import/
+- @see https://webpack.js.org/api/module-methods/#import
+
+```js
+// 返回一个 promise, webpack 采用的是 jsonp 的形式
+// example
+handleClick() {
+  import('./testDynamic').then((Text) => {
+    this.setState({
+      Text,
+    })
+  })
+}
+```
