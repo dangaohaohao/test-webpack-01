@@ -377,3 +377,27 @@ handleClick() {
     }
   },
 ```
+
+#### webpack 打包组件库和组件
+
+- webpack 可以打包应用，也可以打包 js 库
+- 打包 压缩 / 非压缩 版本
+- 支持 AMD / CMD / ESM 模块引入
+- @see https://www.webpackjs.com/guides/author-libraries/#%E6%9A%B4%E9%9C%B2-library
+- @see https://www.webpackjs.com/configuration/output/#output-librarytarget
+- @see https://webpack.js.org/configuration/optimization/
+
+###### 发布到 npm 上
+
+- 配置 description 字段
+- 配置 prepublish 钩子，使发布的时候也进行打包
+- npm login ... npm publish 进行发布
+
+```js
+// large-number 库打包
+if (process.env.NODE_ENV === 'production') {
+  module.exports = require('./dist/large-number.min.js');
+} else {
+  module.exports = require('./dist/large-number.js');
+}
+```

@@ -1,7 +1,7 @@
 {
   "name": "test-webpack-01",
   "version": "1.0.0",
-  "description": "",
+  "description": "大整数加法打包测试",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,6 +11,8 @@
     "watch:prod": "webpack-dev-server --config webpack.prod.js --open",
     "build:dev": "webpack --config webpack.dev.js",
     "build:prod": "webpack --config webpack.prod.js",
+    "build:build": "webpack --config webpack.build.js",
+    "prepublish": "npm run build:build",
     "clean": "rm -rf ./dist",
     "precommit": "lint-staged",
     "lint:staged": "eslint"
