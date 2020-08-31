@@ -6,7 +6,7 @@ const {
 } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const glob = require('glob');
 // const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
@@ -29,7 +29,7 @@ const setMPA = () => {
       new HtmlWebpackPlugin({
         template: path.join(__dirname, `/src/${pageName}/index.html`),
         filename: `${pageName}.html`,
-        chunks: ['commons', pageName],
+        chunks: ['vendors', pageName],
         inject: true,
         minify: {
           html5: true,
@@ -55,12 +55,11 @@ const {
 } = setMPA();
 
 module.exports = {
-  mode: 'development',
   entry: entry,
-  output: {
-    filename: '[name]_[hash:8].js',
-    path: path.join(__dirname, 'dist'),
-  },
+  // output: {
+  //   filename: '[name]_[chunkhash:8].js',
+  //   path: path.join(__dirname, 'dist'),
+  // },
   module: {
     rules: [{
         test: /\.js$/,
@@ -94,6 +93,7 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           'css-loader',
           'less-loader',
+          // 'postcss-loader',
           {
             loader: 'postcss-loader',
             // options: {
@@ -105,6 +105,15 @@ module.exports = {
             //   ],
             // },
           },
+          // {
+          //   loader: 'px2rem-loader',
+          //   options: {
+          //     // remUnit 是指 1 rem 对应 多少 px， 最好是设计稿 / 10, 比如这里最好是 750 的设计稿
+          //     remUnit: 75,
+          //     // 转换成 rem 后小数点位数
+          //     remPrecision: 8,
+          //   },
+          // },
         ],
       },
       // {
@@ -123,7 +132,12 @@ module.exports = {
       // },
       {
         test: /\.(ttf|eot|woff|woff2|otf)$/,
-        use: 'file-loader',
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: '[name]_[hash:8].[ext]',
+          },
+        }, ],
       },
       {
         test: /\.(png|jpg|jpeg|svg|gif)$/,
@@ -154,17 +168,17 @@ module.exports = {
     //     removeComments: false,
     //     collapseWhitespace: true,
     //     preserveLineBreaks: false,
-    //   }
+    //   },
     // }),
-    new webpack.HotModuleReplacementPlugin(),
-    new MiniCssExtractPlugin({
-      filename: '[name]_[hash:8].css',
-    }),
     new OptimizeCssAssetsWebpackPlugin({
       assetNameRegExp: /\.css$/g,
       cssProcessor: require('cssnano'),
     }),
+    // new MiniCssExtractPlugin({
+    //   filename: '[name]_[contenthash:8].css',
+    // }),
     new TerserWebpackPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
     // new HtmlWebpackExternalsPlugin({
     //   externals: [{
     //       module: 'react',
@@ -180,10 +194,10 @@ module.exports = {
     // }),
   ].concat(htmlWebpackPlugins),
   // 热更新不输出实际文件，而是放在内存中，不用磁盘io，速度更快,不用手动刷新
-  devServer: {
-    contentBase: './dist',
-    hot: true,
-  },
+  // devServer: {
+  //   contentBase: './dist',
+  //   hot: true,
+  // },
   // watch: true, // 文件监听 轮训判断文件的最后编辑时间是否变化，如果发生变化，不会立即告诉监听者，而是先缓存起来，等 aggregateTimeout,缺点需要手动刷新
   // // 只有开启监听模式，watchOptions才有意义
   // watchOptions: {
@@ -198,17 +212,15 @@ module.exports = {
   performance: {
     hints: false,
   },
-  devtool: 'eval-source-map',
+  devtool: 'none',
   optimization: {
     splitChunks: {
       chunks: 'all',
       name: true,
-      minChunks: 2,
-      minSize: 10,
       cacheGroups: {
         commons: {
-          // test: /[\\/]node_modules[\\/]/,
-          name: 'commons',
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
         },
       },
     },

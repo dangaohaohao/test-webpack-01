@@ -277,3 +277,9 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 @see https://github.com/webpack-contrib/terser-webpack-plugin
 ```
+
+#### 多环境配置
+
+- @see https://www.webpackjs.com/guides/production/
+- 使用 webpack-merge 工具来合并
+- 官网引入有点问题，应该是 const {merge} = require('webpack-merge'), webpack-merge 源码是暴露来一个对象
