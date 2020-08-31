@@ -177,7 +177,7 @@ module.exports = {
     // new MiniCssExtractPlugin({
     //   filename: '[name]_[contenthash:8].css',
     // }),
-    new TerserWebpackPlugin(),
+    // new TerserWebpackPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
     // new HtmlWebpackExternalsPlugin({
     //   externals: [{
@@ -192,6 +192,7 @@ module.exports = {
     //     },
     //   ],
     // }),
+    // new webpack.optimize.ModuleConcatenationPlugin(),
   ].concat(htmlWebpackPlugins),
   // 热更新不输出实际文件，而是放在内存中，不用磁盘io，速度更快,不用手动刷新
   // devServer: {

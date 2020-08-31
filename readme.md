@@ -283,3 +283,25 @@ const TerserPlugin = require('terser-webpack-plugin');
 - @see https://www.webpackjs.com/guides/production/
 - 使用 webpack-merge 工具来合并
 - 官网引入有点问题，应该是 const {merge} = require('webpack-merge'), webpack-merge 源码是暴露来一个对象
+
+#### 模块转换分析
+
+- 模块 -> 模块初始化函数
+- 结论
+  - 被 webpack 转换后的函数会带上一层包裹
+  - import 会转换成 \_webpack_require
+  - export 会转换成 \_webpack_exports
+
+###### Scope hoisting 原理
+
+```text
+将所有模块代码按照引用顺序放在函数作用域里，然后适当地重命名以防止变量名冲突
+
+对比：通过 scope hoisting 可以减少函数声明代码和内存开销
+```
+
+- webpack4 中 mode 为 production 会默认开启, webpack3 中还需要手动添加配置
+
+```js
+new webpack.optimize.ModuleConcatenationPlugin(),
+```
