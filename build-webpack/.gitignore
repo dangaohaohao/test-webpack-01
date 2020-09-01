@@ -6,18 +6,12 @@
 /yarn-error.log
 /yarn.lock
 /package-lock.json
-/build-webpack/node_modules
-/build-webpack/package-lock.json
 
 # production
 /dist
 
 # misc
 .DS_Store
-
-# umi
-.umi
-.umi-production
 
 src/**/*.less.d.ts
 src/**/*.css.d.ts
