@@ -428,3 +428,33 @@ if (process.env.NODE_ENV === 'production') {
 
 - @see https://www.webpackjs.com/configuration/stats/
 - 优化输出日志效果 插件：friendly-errors-webpack-plugin @see https://www.npmjs.com/package/friendly-errors-webpack-plugin
+
+#### 如何主动捕获并处理构建错误
+
+- @see https://webpack.js.org/api/compiler-hooks/#root
+- compiler 会在每次构建结束后触发 done 这个 hook
+- process.exit 主动处理构建报错
+- 在这里可以做日志上报的工作
+- 在 plugin 中添加如下代码
+
+```js
+// this 对象是指 compiler
+// webpack4
+function () {
+  this.hooks.done.tap('done', (stats) => {
+    if (stats.compilation.errors && stats.compilation.errors.length && process.argv.indexOf('--watch') == -1) {
+      console.log('build error');
+      process.exit(1);
+    }
+  });
+}
+// webpack3
+function () {
+  this.plugin('done', (stats) => {
+    if (stats.compilation.errors && stats.compilation.errors.length && process.argv.indexOf('--watch') == -1) {
+      console.log('build error');
+      process.exit(1);
+    }
+  });
+}
+```
