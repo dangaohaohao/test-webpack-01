@@ -12,6 +12,7 @@
     "build:dev": "webpack --config webpack.dev.js",
     "build:prod": "webpack --config webpack.prod.js",
     "build:build": "webpack --config webpack.build.js",
+    "build:ssr": "webpack --config webpack.ssr.js",
     "prepublish": "npm run build:build",
     "clean": "rm -rf ./dist",
     "precommit": "lint-staged",
@@ -31,6 +32,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.1",
     "lib-flexible": "^0.3.2"
   },
   "devDependencies": {

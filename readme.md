@@ -401,3 +401,22 @@ if (process.env.NODE_ENV === 'production') {
   module.exports = require('./dist/large-number.js');
 }
 ```
+
+#### 服务端渲染
+
+- 客户端渲染
+  - 开始加载
+  - html 加载成功后，加载数据
+  - 数据加载成功，渲染成功开始，加载图片资源
+  - 图片加载成功，页面可交互
+- 服务端渲染(使用 express)
+  - 所有模板等资源都存储在客户端
+  - 一个 html 返回所有数据
+  - 优点：减少白屏时间 / 对于 SEO 优化
+- 遇到的问题
+  - 浏览器的全局变量，如 window 在 node 中是没有的，要做一个 hack
+    - 组件适配，将不兼容的组件根据环境来进行适配
+    - 请求适配，将 fetch / ajax 发送请求的写法改成 axios
+  - 样式问题
+    - 服务端打包通过 ignore-loader 忽略掉 css 的解析
+    - 替换 style-loader 替换成 isomorphic-style-loader
