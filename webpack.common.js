@@ -10,6 +10,7 @@ const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plug
 const glob = require('glob');
 // const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 // const TerserWebpackPlugin = require('terser-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 const ROOT_PATH = path.resolve(__dirname);
 const ENTRY_FILE_REG = /src\/(.*)\/index\.js/;
@@ -195,6 +196,7 @@ module.exports = {
     //   ],
     // }),
     // new webpack.optimize.ModuleConcatenationPlugin(),
+    new FriendlyErrorsWebpackPlugin(),
   ].concat(htmlWebpackPlugins),
   // 热更新不输出实际文件，而是放在内存中，不用磁盘io，速度更快,不用手动刷新
   // devServer: {

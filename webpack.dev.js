@@ -26,6 +26,8 @@ module.exports = merge(common, {
   devServer: {
     contentBase: './dist',
     hot: true,
+    // 只有构建失败时才会提示
+    stats: "errors-only",
   },
   devtool: 'eval-source-map',
 });

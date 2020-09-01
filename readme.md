@@ -423,3 +423,8 @@ if (process.env.NODE_ENV === 'production') {
 - 解决服务端渲染样式不起作用问题，读取 html 模版, 放置占位符, 服务端使用字符串的 replace 方法替换
 - 除了样式可以使用占位符进行替换，首屏初始化数据也可以使用占位符替换
 - @see https://stackoverflow.com/questions/48248832/stylesheet-not-loaded-because-of-mime-type
+
+#### 输出日志 stats
+
+- @see https://www.webpackjs.com/configuration/stats/
+- 优化输出日志效果 插件：friendly-errors-webpack-plugin @see https://www.npmjs.com/package/friendly-errors-webpack-plugin

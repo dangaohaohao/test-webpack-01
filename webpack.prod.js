@@ -25,4 +25,6 @@ module.exports = merge(common, {
     // })
   ],
   devtool: 'none',
+  // 只有构建失败时才会提示
+  stats: "errors-only"
 });
