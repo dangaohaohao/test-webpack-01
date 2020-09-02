@@ -3,7 +3,9 @@ const glob = require('glob');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {
+  CleanWebpackPlugin
+} = require('clean-webpack-plugin');
 
 const ROOT_PATH = path.resolve(__dirname);
 const ENTRY_FILE_REG = /src\/(.*)\/index\.js/;
@@ -43,13 +45,15 @@ const setMPA = () => {
   };
 };
 
-const { entry, htmlWebpackPlugins } = setMPA();
+const {
+  entry,
+  htmlWebpackPlugins
+} = setMPA();
 
 module.exports = {
   entry: entry,
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.js$/,
         use: 'babel-loader',
         include: path.resolve(__dirname, './src'),
@@ -65,28 +69,24 @@ module.exports = {
       },
       {
         test: /\.(ttf|eot|woff|woff2|otf)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name]_[hash:8].[ext]',
-            },
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: '[name]_[hash:8].[ext]',
           },
-        ],
+        }, ],
       },
       {
         test: /\.(png|jpg|jpeg|svg|gif)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 1100000,
-              name: '[name]_[hash:8].[ext]',
-              outputPath: 'assets/',
-              publicPath: 'assets/',
-            },
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 1100000,
+            name: '[name]_[hash:8].[ext]',
+            outputPath: 'assets/',
+            publicPath: 'assets/',
           },
-        ],
+        }, ],
       },
     ],
   },
@@ -96,7 +96,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name]_[contenthash:8].css',
     }),
-    function () {
+    function errorPlugin() {
       this.hooks.done.tap('done', (stats) => {
         if (
           stats.compilation.errors &&
