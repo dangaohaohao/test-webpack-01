@@ -1,5 +1,5 @@
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
-const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
+// const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const {
   merge
 } = require('webpack-merge');
@@ -13,19 +13,19 @@ const prodConfig = {
       assetNameRegExp: /\.css$/g,
       cssProcessor: require('cssnano'),
     }),
-    new HtmlWebpackExternalsPlugin({
-      externals: [{
-          module: 'react',
-          entry: 'https://unpkg.com/react@16/umd/react.production.min.js',
-          global: 'React',
-        },
-        {
-          module: 'react-dom',
-          entry: 'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js',
-          global: 'ReactDom',
-        },
-      ],
-    }),
+    // new HtmlWebpackExternalsPlugin({
+    //   externals: [{
+    //       module: 'react',
+    //       entry: 'https://unpkg.com/react@16/umd/react.production.min.js',
+    //       global: 'React',
+    //     },
+    //     {
+    //       module: 'react-dom',
+    //       entry: 'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js',
+    //       global: 'ReactDom',
+    //     },
+    //   ],
+    // }),
   ],
   devtool: 'none',
   optimization: {

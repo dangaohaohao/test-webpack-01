@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- html-webpack-plugin 其实是使用的 ejs 的模板引擎，所以这里可以直接使用 $ 的语法 -->
+  <%= require('raw-loader!./meta.html')%>
+  <title>index</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <!-- 使用 html-webpack-externals-plugin 插件提取公共库 cdn 方式引入 -->
+  <!-- <script type="text/javascript" src="https://now8.gtimg.com/now/lib/16.8.6/react.min.js"></script>
+  <script type="text/javascript" src="https://now8.gtimg.com/now/lib/16.8.6/react-dom.min.js"></script> -->
+</body>
+
+</html>

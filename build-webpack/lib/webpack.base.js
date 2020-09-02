@@ -7,14 +7,15 @@ const {
   CleanWebpackPlugin
 } = require('clean-webpack-plugin');
 
-const ROOT_PATH = path.resolve(__dirname);
+// const ROOT_PATH = path.resolve(__dirname);
 const ENTRY_FILE_REG = /src\/(.*)\/index\.js/;
+const PROJECT_ROOT = process.cwd();
 
 const setMPA = () => {
   const entry = {};
   const htmlWebpackPlugins = [];
 
-  const entryFiles = glob.sync(path.resolve(ROOT_PATH, './src/*/index.js'));
+  const entryFiles = glob.sync(path.resolve(PROJECT_ROOT, './src/*/index.js'));
 
   entryFiles.map((entryFile) => {
     const match = entryFile.match(ENTRY_FILE_REG);
@@ -23,7 +24,7 @@ const setMPA = () => {
     entry[pageName] = entryFile;
     htmlWebpackPlugins.push(
       new HtmlWebpackPlugin({
-        template: path.join(__dirname, `/src/${pageName}/index.html`),
+        template: path.join(PROJECT_ROOT, `/src/${pageName}/index.html`),
         filename: `${pageName}.html`,
         chunks: ['vendors', pageName],
         inject: true,
@@ -52,12 +53,16 @@ const {
 
 module.exports = {
   entry: entry,
+  output: {
+    filename: '[name]_[chunkhash:8].js',
+    path: path.join(PROJECT_ROOT, 'dist'),
+  },
   module: {
     rules: [{
         test: /\.js$/,
         use: 'babel-loader',
-        include: path.resolve(__dirname, './src'),
-        exclude: path.resolve(__dirname, './node_modules'),
+        include: path.resolve(PROJECT_ROOT, './src'),
+        exclude: path.resolve(PROJECT_ROOT, './node_modules'),
       },
       {
         test: /\.css$/,
