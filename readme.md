@@ -477,3 +477,7 @@ function () {
 - 将构建配置设计成一个库，比如 hjs-webpack
 - 抽成一个工具进行管理: 比如 create-react-app
 - 将所有的配置放在一个文件，通过 --env 参数控制分支选择
+
+#### Travis CI 持续集成
+
+- @see http://www.ruanyifeng.com/blog/2017/12/travis_ci_tutorial.html

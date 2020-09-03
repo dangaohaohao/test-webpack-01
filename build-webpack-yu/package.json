@@ -1,5 +1,5 @@
 {
-  "name": "build-webpack",
+  "name": "build-webpack-yu",
   "version": "1.0.0",
   "description": "构建脚手架",
   "main": "index.js",
@@ -9,7 +9,11 @@
     "eslint": "eslint --fix",
     "eslint:lib": "eslint ./lib --fix"
   },
-  "keywords": [],
+  "keywords": [
+    "cli",
+    "webpack",
+    "build"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
