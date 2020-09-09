@@ -498,10 +498,14 @@ function () {
 - webpack-bundle-analyzer 分析体积
 - https://www.npmjs.com/package/webpack-bundle-analyzer
 
-#### 速度提升
+#### 多进程
 
 - 采用高版本的 webpack 和 node.js, webpack 4 自身做了很多优化，node.js 高版本构建速度会更快，内部做了优化
 - 开启多进程多实例: thread-loader / happyPack / parallel-webpack 
 - thread-loader: 划分多个 node 进程，把模块依次分给 node 进程, 来达到多进程的目的, happyPack 作者不维护了，推荐使用 webpack 官方推出的 thread-loader 
 - https://www.npmjs.com/package/happypack
 - https://webpack.js.org/loaders/thread-loader/#root
+
+#### 多进程/多实例: 并行压缩
+- uglifyJs-webpack-plugin / terser-webpack-plugin 有一个 parallel 参数(默认是电脑 cpu 电脑两倍-1)，可以开启并行压缩
+- uglifyJs-webpack-plugin 不支持 es6 语法 / terser-webpack-plugin支持 es6 语法

@@ -21,7 +21,9 @@ module.exports = smp.wrap(merge(common, {
     new MiniCssExtractPlugin({
       filename: '[name]_[contenthash:8].css',
     }),
-    new TerserWebpackPlugin(),
+    new TerserWebpackPlugin({
+      parallel: true
+    }),
     // webpack4 中 会默认设置
     // new webpack.DefinePlugin({
     //   'process.env.NODE_ENV': JSON.stringify('production')
