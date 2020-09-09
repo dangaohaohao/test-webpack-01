@@ -16,7 +16,8 @@
     "prepublish": "npm run build:build",
     "clean": "rm -rf ./dist",
     "precommit": "lint-staged",
-    "lint:staged": "eslint"
+    "lint:staged": "eslint",
+    "build:stats": "webpack --config webpack.prod.js --json > stats.json"
   },
   "lint-staged": {
     "*.{js,ts,tsx,jsx}": [

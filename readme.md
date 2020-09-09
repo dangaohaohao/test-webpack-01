@@ -481,3 +481,8 @@ function () {
 #### Travis CI 持续集成
 
 - @see http://www.ruanyifeng.com/blog/2017/12/travis_ci_tutorial.html
+
+#### 查看构建信息
+
+- 注释掉 `stats: 'errors-only'`, 可以查看到很多详细的包大小信息
+- 添加 `"build:stats": "webpack --config webpack.prod.js --json > stats.json"`, `--json > stats.json`将构建的信息生成一个 json 文件

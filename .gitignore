@@ -25,6 +25,9 @@ src/**/*.css.d.ts
 #idea
 /.idea
 
+# 构建信息
+stats.json
+
 
 .vscode/
 .sra
