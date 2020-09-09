@@ -17,7 +17,8 @@
     "clean": "rm -rf ./dist",
     "precommit": "lint-staged",
     "lint:staged": "eslint",
-    "build:stats": "webpack --config webpack.prod.js --json > stats.json"
+    "build:stats": "webpack --config webpack.prod.js --json > stats.json",
+    "build:dll": "webpack --config webpack.dll.js"
   },
   "lint-staged": {
     "*.{js,ts,tsx,jsx}": [

@@ -8,6 +8,7 @@
 /package-lock.json
 /build-webpack/node_modules
 /build-webpack/package-lock.json
+/build
 
 # production
 /dist

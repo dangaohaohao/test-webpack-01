@@ -507,5 +507,17 @@ function () {
 - https://webpack.js.org/loaders/thread-loader/#root
 
 #### 多进程/多实例: 并行压缩
+
 - uglifyJs-webpack-plugin / terser-webpack-plugin 有一个 parallel 参数(默认是电脑 cpu 电脑两倍-1)，可以开启并行压缩
 - uglifyJs-webpack-plugin 不支持 es6 语法 / terser-webpack-plugin支持 es6 语法
+
+#### 分包：设置 Externals
+
+- 思路：将 react, react-dom 等基础包通过 cdn 引入，不打入到 bundle 中
+- 方法：使用 html-webpack-externals-plugin 
+- 但是这样也有不好的一点：一个项目可能会有很多个这样的基础包，会打出很多个 script 标签
+- splitChunks 分包也有不好的点，就是每次，还是会对这些基础包进行分析
+- 更好的做法是，采用webpack 自带的 DllPlugin 进行分包
+- 思路：将 react, react-dom, redux, react-redux 等基础包和业务基础包打包成一个文件
+- 方法：使用 DllPlugin 进行分包，DllReferencePlugin 对 manifest.json(DllPlugin 打出来的对分离包的描述) 进行引用
+- https://webpack.js.org/plugins/dll-plugin/#root
