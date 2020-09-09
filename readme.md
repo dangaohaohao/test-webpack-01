@@ -497,3 +497,11 @@ function () {
 #### 分析 webpack 打包体积
 - webpack-bundle-analyzer 分析体积
 - https://www.npmjs.com/package/webpack-bundle-analyzer
+
+#### 速度提升
+
+- 采用高版本的 webpack 和 node.js, webpack 4 自身做了很多优化，node.js 高版本构建速度会更快，内部做了优化
+- 开启多进程多实例: thread-loader / happyPack / parallel-webpack 
+- thread-loader: 划分多个 node 进程，把模块依次分给 node 进程, 来达到多进程的目的, happyPack 作者不维护了，推荐使用 webpack 官方推出的 thread-loader 
+- https://www.npmjs.com/package/happypack
+- https://webpack.js.org/loaders/thread-loader/#root
