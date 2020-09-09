@@ -11,6 +11,7 @@ const glob = require('glob');
 // const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 // const TerserWebpackPlugin = require('terser-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const ROOT_PATH = path.resolve(__dirname);
 const ENTRY_FILE_REG = /src\/(.*)\/index\.js/;
@@ -197,6 +198,7 @@ module.exports = {
     // }),
     // new webpack.optimize.ModuleConcatenationPlugin(),
     new FriendlyErrorsWebpackPlugin(),
+    new BundleAnalyzerPlugin(),
     function () {
       this.hooks.done.tap('done', (stats) => {
         if (stats.compilation.errors && stats.compilation.errors.length && process.argv.indexOf('--watch') == -1) {

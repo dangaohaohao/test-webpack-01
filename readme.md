@@ -493,3 +493,7 @@ function () {
 - 分析整个打包总耗时
 - 每个插件和 loader 的耗时情况
 - https://www.npmjs.com/package/speed-measure-webpack-plugin
+
+#### 分析 webpack 打包体积
+- webpack-bundle-analyzer 分析体积
+- https://www.npmjs.com/package/webpack-bundle-analyzer
