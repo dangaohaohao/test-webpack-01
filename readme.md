@@ -486,3 +486,10 @@ function () {
 
 - 注释掉 `stats: 'errors-only'`, 可以查看到很多详细的包大小信息
 - 添加 `"build:stats": "webpack --config webpack.prod.js --json > stats.json"`, `--json > stats.json`将构建的信息生成一个 json 文件
+
+#### 分析构建信息，提升构建速度
+
+- 使用 `speed-measure-webpack-plugin` 插件来进行分析
+- 分析整个打包总耗时
+- 每个插件和 loader 的耗时情况
+- https://www.npmjs.com/package/speed-measure-webpack-plugin

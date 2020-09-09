@@ -1,13 +1,16 @@
 const path = require('path');
-const webpack = require('webpack');
+// const webpack = require('webpack');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const {
   merge
 } = require('webpack-merge');
 const common = require('./webpack.common.js');
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 
-module.exports = merge(common, {
+const smp = new SpeedMeasurePlugin();
+
+module.exports = smp.wrap(merge(common, {
   mode: 'production',
   output: {
     filename: '[name]_[chunkhash:8].js',
@@ -27,4 +30,4 @@ module.exports = merge(common, {
   devtool: 'none',
   // 只有构建失败时才会提示
   stats: "errors-only"
-});
+}));
