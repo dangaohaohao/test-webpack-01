@@ -35,6 +35,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
+    "image-webpack-loader": "^6.0.0",
     "lib-flexible": "^0.3.2"
   },
   "devDependencies": {
