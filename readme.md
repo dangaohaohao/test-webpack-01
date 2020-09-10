@@ -550,3 +550,8 @@ new TerserWebpackPlugin({
 - https://www.npmjs.com/package/imagemin
 - 配置 image-webpack-loader
 - https://www.npmjs.com/package/image-webpack-loader
+
+#### 无用的 css 如何删除掉(treeshaking css)
+- PurifyCss: 遍历代码，识别已经用到的 CSS class
+- uncss: HTML 需要通过 jsdom 来加载，所有的样式通过 PostCss 解析，通过 document.querySelector 来识别在 html 中不存在的选择器
+- purgecss-webpack-plugin https://www.npmjs.com/package/purgecss-webpack-plugin

@@ -1,7 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const webpack = require('webpack');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {
+  CleanWebpackPlugin
+} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 // const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
@@ -13,6 +15,11 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // const HappyPack = require('happypack');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const PurgecssPlugin = require('purgecss-webpack-plugin')
+
+const PATHS = {
+  src: 'src'
+}
 
 const ROOT_PATH = path.resolve(__dirname);
 const ENTRY_FILE_REG = /src\/(.*)\/index\.js/;
@@ -52,7 +59,10 @@ const setMPA = () => {
   };
 };
 
-const { entry, htmlWebpackPlugins } = setMPA();
+const {
+  entry,
+  htmlWebpackPlugins
+} = setMPA();
 
 module.exports = {
   entry: entry,
@@ -61,12 +71,10 @@ module.exports = {
   //   path: path.join(__dirname, 'dist'),
   // },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.js$/,
         // use: 'happypack/loader',
-        use: [
-          {
+        use: [{
             loader: 'thread-loader',
             options: {
               workers: 3,
@@ -144,19 +152,16 @@ module.exports = {
       // },
       {
         test: /\.(ttf|eot|woff|woff2|otf)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name]_[hash:8].[ext]',
-            },
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: '[name]_[hash:8].[ext]',
           },
-        ],
+        }, ],
       },
       {
         test: /\.(png|jpg|jpeg|svg|gif)$/,
-        use: [
-          {
+        use: [{
             loader: 'url-loader',
             options: {
               limit: 1100000,
@@ -234,6 +239,11 @@ module.exports = {
     //   manifest: require('./build/library/library.json')
     // }),
     new HardSourceWebpackPlugin(),
+    new PurgecssPlugin({
+      paths: glob.sync(`${PATHS.src}/**/*`, {
+        nodir: true
+      }),
+    }),
   ].concat(htmlWebpackPlugins),
   // 热更新不输出实际文件，而是放在内存中，不用磁盘io，速度更快,不用手动刷新
   // devServer: {
