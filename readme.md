@@ -536,3 +536,12 @@ new TerserWebpackPlugin({
       cache: true
     }),
 ```
+
+#### 缩小构建目标
+- loader 转换的时候不是所有文件都需要解析，比如 babel-loader 不需要解析 node_modules
+- 减少文件搜索范围
+  - 优化 resolve.modules 配置(减少模块搜索层级)
+  - 优化 resolve.mainFields 配置
+  - 优化 resolve.extensions 配置
+  - 合理使用 alias
+- 
