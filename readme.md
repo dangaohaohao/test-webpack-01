@@ -555,3 +555,19 @@ new TerserWebpackPlugin({
 - PurifyCss: 遍历代码，识别已经用到的 CSS class
 - uncss: HTML 需要通过 jsdom 来加载，所有的样式通过 PostCss 解析，通过 document.querySelector 来识别在 html 中不存在的选择器
 - purgecss-webpack-plugin https://www.npmjs.com/package/purgecss-webpack-plugin
+
+#### Polyfill Service 原理
+
+- 原理: 识别 User Agent, 下发不同的 Polyfill(这样就不用为了少部分用户，给所有用户下发 Polyfill 了，没必要)
+- https://github.com/paulmillr/es6-shim
+- polyfill.io 官方推荐的服务 `<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>`
+- 也可以基于官方开源的服务来自建 polyfill 服务
+- 存在的问题：现在浏览器厂商比较多，有的浏览器厂商可能会魔改 userAgent, 导致 polyfill 服务没有下发需要的 polyfill
+
+#### 体积优化的策略
+
+- Scope Hoisting
+- Tree-shaking
+- 公共资源分离
+- 图片压缩
+- 动态Polyfill
