@@ -586,3 +586,14 @@ new TerserWebpackPlugin({
 4. `const installedClis = CLIs.filter(cli => cli.installed);` // 判断两个 cli(webpack-cli 功能更强大 / webpack-command 精简版) 是否安装了
 5. `if (installedClis.length === 0) {}else if (installedClis.length === 1) {} else {}` // 根据安装数量处理 0: 提示用户进行选择安装 / 1: 根据安装的包进行处理 / 2: 提示用户只能使用一个，需要卸载某个包
 6. 这个过程，webpack 最终会找到 webpack-cli(webpack-command) 这个 npm 包，并且执行 cli
+
+###### 分析 webpack-cli
+
+1. 引入 yargs, 对命令行进行定制
+2. 分析命令行参数, 对各个参数进行转换, 组成编译配置项
+3. 引用 webpack, 根据配置项进行编译和构建
+  - 从 NON_COMPILATION_ARGS(一个数组，包含了哪些命令不需要编译) 分析出不需要编译的命令
+  - config/config-args.js 将命令行划分为 9 类
+4. webpack-cli 执行的结果
+  - webpack-cli 对 配置文件 和 命令行参数 进行转换, 最终生成配置选项参数 options
+  - 最终会根据配置参数实例化 webpack 对象, 然后执行构建流程
