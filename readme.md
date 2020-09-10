@@ -571,3 +571,18 @@ new TerserWebpackPlugin({
 - 公共资源分离
 - 图片压缩
 - 动态Polyfill
+
+#### webpack 源码分析
+
+- 如果是全局安装，mac 下会去找user/locale 下的 webpack 命令
+- 如果是局部安装，会找 node_modules/.bin, webpack 和 webpack-cli 包的 package.json 下有配置 bin命令，这样才能在 node_modules/.bin 执行
+- 比如 npm run dev, 其实会执行 webpack, 就会去 node_modules/.bin 找这个命令，这个命令实际执行其实是 node_modules/webapck/.bin/webpack.js
+
+###### 分析 webpack 入口文件 webpack.js
+
+1. `process.exitCode = 0;`  // 正常执行返回
+2. `const runCommand = (command, args) => {};` // 运行某个命令(比如安装包，不用手动安装)
+3. `const isInstalled = packageName => {};` // 判断某个包是否安装
+4. `const installedClis = CLIs.filter(cli => cli.installed);` // 判断两个 cli(webpack-cli 功能更强大 / webpack-command 精简版) 是否安装了
+5. `if (installedClis.length === 0) {}else if (installedClis.length === 1) {} else {}` // 根据安装数量处理 0: 提示用户进行选择安装 / 1: 根据安装的包进行处理 / 2: 提示用户只能使用一个，需要卸载某个包
+6. 这个过程，webpack 最终会找到 webpack-cli(webpack-command) 这个 npm 包，并且执行 cli
