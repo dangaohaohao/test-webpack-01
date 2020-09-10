@@ -22,7 +22,8 @@ module.exports = smp.wrap(merge(common, {
       filename: '[name]_[contenthash:8].css',
     }),
     new TerserWebpackPlugin({
-      parallel: true
+      parallel: true,
+      cache: true
     }),
     // webpack4 中 会默认设置
     // new webpack.DefinePlugin({

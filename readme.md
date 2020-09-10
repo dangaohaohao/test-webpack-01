@@ -521,3 +521,18 @@ function () {
 - 思路：将 react, react-dom, redux, react-redux 等基础包和业务基础包打包成一个文件
 - 方法：使用 DllPlugin 进行分包，DllReferencePlugin 对 manifest.json(DllPlugin 打出来的对分离包的描述) 进行引用
 - https://webpack.js.org/plugins/dll-plugin/#root
+
+#### 缓存
+
+- 目的：提升二次构建速度
+- babel-loader(转换的js进行缓存) 开启缓存 / terser-webpack-plugin 开启缓存(压缩) / 使用 cache-loader(模块) 或者 hard-source-webpack-plugin(模块)
+- https://www.npmjs.com/package/hard-source-webpack-plugin
+- 如果有缓存, node_modules 下有 .cache 目录
+```js
+'babel-loader?cacheDirectory=true'
+
+new TerserWebpackPlugin({
+      parallel: true,
+      cache: true
+    }),
+```

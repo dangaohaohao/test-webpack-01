@@ -14,6 +14,7 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 // const webpack = require('webpack');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // const HappyPack = require('happypack');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 const ROOT_PATH = path.resolve(__dirname);
 const ENTRY_FILE_REG = /src\/(.*)\/index\.js/;
@@ -74,7 +75,7 @@ module.exports = {
               workers: 3,
             },
           },
-          'babel-loader',
+          'babel-loader?cacheDirectory=true',
         ],
         // 加上 eslint-loader 会在构建阶段报错
         // use: ['babel-loader', 'eslint-loader'],
@@ -228,6 +229,7 @@ module.exports = {
     // new webpack.DllReferencePlugin({
     //   manifest: require('./build/library/library.json')
     // }),
+    new HardSourceWebpackPlugin()
   ].concat(htmlWebpackPlugins),
   // 热更新不输出实际文件，而是放在内存中，不用磁盘io，速度更快,不用手动刷新
   // devServer: {
